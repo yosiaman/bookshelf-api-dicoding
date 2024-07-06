@@ -1,6 +1,7 @@
 const { nanoid } = require('nanoid');
 const bookShelf = require('./bookshelf');
 
+// function for add a book
 function addBookHandler(request, h) {
   const { name, year, author, summary, publisher, pageCount, readPage, reading } = request.payload;
   const id = nanoid(10);
@@ -51,6 +52,19 @@ function addBookHandler(request, h) {
   return response;
 }
 
+// function for get all books
+function getAllBooksHandler() {
+  const books = bookShelf;
+  return {
+    status: 'success',
+    data: {
+      books
+    }
+  }
+}
+
+
 module.exports = {
-  addBookHandler
+  addBookHandler,
+  getAllBooksHandler
 }
