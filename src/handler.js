@@ -53,14 +53,32 @@ function addBookHandler(request, h) {
 }
 
 // function for get all books
-function getAllBooksHandler() {
-  const books = bookShelf;
+function getAllBooksHandler(request) {
+  let books = bookShelf;
+  const { reading, finished, name } = request.query;
+
+  if (reading !== undefined) {
+    books = books.filter(item => item.reading === !!Number(reading));
+  }
+
+  if (finished !== undefined) {
+    books = books.filter(item => item.finished === !!Number(finished));
+  }
+
+  if (name !== undefined) {
+    books = books.filter(item => item.name.toLowerCase().includes(name.toLowerCase()));
+  }
+
   return {
     status: 'success',
     data: {
-      books
+      books: books.map(item => ({
+        id: item.id,
+        name: item.name,
+        publisher: item.publisher
+      }))
     }
-  }
+  };
 }
 
 // function for get book by id
